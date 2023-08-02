@@ -1,0 +1,19 @@
+
+curl 'https://apis.naver.com/commentBox/cbox/web_naver_recommend_json.json?ticket=news&templateId=view_society_m1&pool=cbox5&_cv=20230613142236' \
+  -H 'authority: apis.naver.com' \
+  -H 'accept: application/json, text/javascript, */*; q=0.01' \
+  -H 'accept-language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7' \
+  -H 'content-type: application/x-www-form-urlencoded; charset=UTF-8' \
+  -H 'cookie: NNB=QTMDGNJHTMZWI; nid_inf=-1288902096; NID_AUT=n4xNkN8VaTTNWEWZ/sSrryWF2eur9MpFN4A1YQkoWtr4vOIro7qcjSabbakWJpno; NID_JKL=gow1Jfl1l89Iw//avhZNRgMAu4jB+M9ZVJHR5Qv3Yn0=; nx_ssl=2; page_uid=i4pymsp0J1sss4h8q50ssssssU4-223717; NID_SES=AAABsuFBWu4RVm3qTl5j7JWTSNFUKb2t7Sn1jshtyvg3dFxeczdlbYn3GNubYw+aDvnO3y2MzaSaLFU1EWldlS5tsQnAdvJDa3TUFQ+iSjvHZf4fEjA+rYqbaCt9b1gk+nvcHVbYuZuiK1oighhYPqprDFGPZHRu+JrlKq7hx2HgL1TSU1ZRm7M+nLK6JDMzL1YEm4Ront4S4Y8bM1xnGza0vXdQHhEXkJvIy1+8UELfCj39QGD1kWB0Trb/nrWfkuG85Uaw6Qo/gej/X5+ZCsqg6kriUb/+lWKP9fqK0sxKSsRq1v1fszYRpfyKrhCb+ILPNstnxcpBNkhmLhywHL/+q4ckle/DIrchK/fv2WOrY0uuCYc0sPlHdsn7LpAhIPibhatIJpVnba3rDbaeeaDjHAYWm01nmIzv6ud1INFmUr5ODVCVrVL1FWykNXwLe9NW8/MpPFjE4+f+sCUaKGzdXela1wGZ1ciJ6+NSN+zt3P28OaPECPIxBL3qmZdYpRzUE1o88CBuKDFKg4jexMQfWOfiFK8SKMAJ7wdTgAFw8UMKFw4T98IhA8/l1bd8fp9ekjIicjoYiM1wmH2vzLLB7ic=' \
+  -H 'origin: https://n.news.naver.com' \
+  -H 'referer: https://n.news.naver.com/mnews/article/047/0002391347?sid=102' \
+  -H 'sec-ch-ua: "Not.A/Brand";v="8", "Chromium";v="114", "Google Chrome";v="114"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Windows"' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-site: same-site' \
+  -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36' \
+  -H 'www.r;' \
+  --data-raw 'lang=ko&country=KR&objectId=news047%2C0002391347&categoryId=&pageSize=5&indexSize=10&groupId=&listType=OBJECT&pageType=more&commentNo=791103994037534771&resultType=COMMENT&voteStatus=SYMPATHY&clientType=web-pc&cbox_token=2uv9J9fu2v311p0ntROULBdfTsVOKqdbqppXieSXGOzy6ea0fPXD8mvmqcKxfd2PUm3dKOa15Ks' \
+  --compressed
